@@ -4,11 +4,13 @@ object ShoeStore {
     case class InventoryElement(shoe: Shoe, var quantity: Int)
 
     val jordan_1 = Shoe("Nike", "Air Jordan 1", 11, 160)
+    val jordan_2 = Shoe("Nike", "Air Jordan 2", 11, 160)
 
     class Inventory(var inventory: List[InventoryElement] = List()) {
         def addShoe(shoe: Shoe, _inventory :List[InventoryElement] = inventory): List[InventoryElement] = {
-             inventory = _inventory match {
-                case InventoryElement(shoe, quant) :: xs    => InventoryElement(shoe, quant + 1) :: xs
+
+            inventory = _inventory match {
+                case InventoryElement(Shoe(shoe.brand, shoe.name, _, _), quant) :: xs    => InventoryElement(shoe, quant + 1) :: xs
                 case x :: xs                                => x :: addShoe(shoe, xs)
                 case _                                      => List(InventoryElement(shoe, 1))
             }
