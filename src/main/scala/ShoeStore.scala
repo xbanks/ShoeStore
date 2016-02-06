@@ -24,6 +24,7 @@ package com.store {
     def main(args: Array[String]) = {
         val jordan_1 = Shoe("Nike", "Air Jordan 1", 11, 160)
         println(jordan_1)
+        // args.map(println)
     }
 
 }
