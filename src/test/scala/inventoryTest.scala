@@ -1,4 +1,10 @@
 import com.store.ShoeStore._
+import com.store.Items._
+
+/*
+	Replace this with a new test!
+*/
+
 
 object InventoryTest {
 	val jordan_1 = Shoe("Nike", "Air Jordan 1", 11, 160)
