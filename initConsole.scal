@@ -1,16 +1,13 @@
 // Basically just going to use this for initializing the console
 
 import com.store._
-import com.store.Items._
+import com.store.inventory._
+import com.store.inventory.Item._
 val item1 = Shoe("Test", "Shoe", 11, 150)
 val item2 = Shirt("Supreme", "WhiteShirt", "M", 30)
 val item3 = Shirt("Supreme", "WhiteShirt", "L", 30)
 val item4 = Shirt("Supreme", "WhiteShirt", "M", 30)
 val item5 = Shoe("Test", "Shoe1", 11, 150)
-val i = new Inventory
 
-i.addItem(item1)
-i.addItem(item2)
-i.addItem(item3)
-i.addItem(item4)
-i.addItem(item5)
+val shoeStore = new Store[Shoe](name = "shoe store")
+val shirtStore = new Store[Shirt](name = "shirt store")
