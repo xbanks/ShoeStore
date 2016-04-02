@@ -61,7 +61,7 @@ class StoreFunctionality extends FunSuite {
 
     val (p2, item2, err2) = _store.purchase(_shoe1, 2)
     assert(!p2)
-    assert(item.isEmpty)
+    assert(item2.isEmpty)
     assert(err2.isDefined && err2.get == s"Current Quantity: 1")
 
     val (p3, item3, err3) = _store.purchase(_shoe2, 2)
@@ -69,6 +69,7 @@ class StoreFunctionality extends FunSuite {
     assert(item3.isDefined)
     assert(item3.get.item.equals(_shoe2))
     assert(item3.get.quantity == 2)
+    assert(err3 == None)
   }
 
   test("toString") {

@@ -5,6 +5,7 @@ import com.store.inventory.{Inventory, InventoryElement}
 
 // TODO: maybe switch the parameters around since name is usually the only one used?
 class Store[T <: Item](storeInventory: Inventory[T] = new Inventory[T], name: String) {
+  // Require non empty names
   require(name != null, "Name cannot be null")
   require(name.trim != "", "Name must be Non-Empty")
   require(storeInventory != null)
@@ -16,6 +17,8 @@ class Store[T <: Item](storeInventory: Inventory[T] = new Inventory[T], name: St
 
     if(itemStock.isDefined) {
       val itemQuantity = itemStock.get.quantity
+
+      // Make sure there is enough stock to cover the purchase quantity
       if(itemQuantity < quantity) {
         return (false, None, Some(s"Current Quantity: $itemQuantity"))
       }
