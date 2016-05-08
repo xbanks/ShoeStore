@@ -1,10 +1,13 @@
 package com.store
 
 import com.store.inventory.Item.Item
+import com.store.inventory.implicits._
 import com.store.inventory.{Inventory, InventoryElement}
+import org.json4s.JsonAST.JValue
 
 // TODO: maybe switch the parameters around since name is usually the only one used?
-class Store[T <: Item](storeInventory: Inventory[T] = new Inventory[T], name: String) {
+case class Store[T <: Item](val storeInventory: Inventory[T] = new Inventory[T], name: String) {
+  type storeType = T
   // Require non empty names
   require(name != null, "Name cannot be null")
   require(name.trim != "", "Name must be Non-Empty")
@@ -32,6 +35,8 @@ class Store[T <: Item](storeInventory: Inventory[T] = new Inventory[T], name: St
   }
 
   def getInventory: List[InventoryElement[T]] = storeInventory.inventoryList
+  def getInventoryJson: JValue = storeInventory //inventoryToJson(storeInventory)
+
   def checkStock(item: T): Option[InventoryElement[T]] = storeInventory.getItem(item)
   def addToStock(item: T, quantity: Int = 1): List[InventoryElement[T]] = {
     (1 to quantity).foreach{ i => storeInventory.addItem(item) }

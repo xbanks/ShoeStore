@@ -2,7 +2,9 @@ package com.store.inventory
 
 import com.store.inventory.Item._
 
-class Inventory[T <: Item](var entries: List[InventoryElement[T]] = List[InventoryElement[T]]()) {
+
+// TODO: Remember to change some things about this class now that it's a case class
+case class Inventory[T <: Item](var entries: List[InventoryElement[T]] = List[InventoryElement[T]]()) {
   type IE = InventoryElement[T]
 
   def addItem(item: T, _inventory: List[IE] = entries): List[IE] = {
@@ -35,5 +37,5 @@ class Inventory[T <: Item](var entries: List[InventoryElement[T]] = List[Invento
 
   // TODO: Add a filter function for things like getting all of the shirts, or shoes, etc
   // TODO: Fix the toString
-  // override def toString(): String = "Quantity\t\tShoe\n" + entries.map(elem => s"${elem.item.quantity}\t${elem.item.shoe}\n").foldLeft("")(_+_)
+  override def toString(): String = Shoe.listHeader + entries.map(elem => s"${elem.item}\t${elem.quantity}\n").foldLeft("\n")(_+_)
 }
