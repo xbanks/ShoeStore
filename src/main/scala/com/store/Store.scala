@@ -1,8 +1,9 @@
 package com.store
 
 import com.store.inventory.Item.Item
+import com.store.inventory.implicits._
 import com.store.inventory.{Inventory, InventoryElement}
-
+import org.json4s.JsonAST.JValue
 
 class Store[T <: Item](name: String, storeInventory: Inventory[T] = new Inventory[T])  {
   // Require non empty names
@@ -29,6 +30,8 @@ class Store[T <: Item](name: String, storeInventory: Inventory[T] = new Inventor
   private val Yes = (item: InventoryElement[T]) => (true, Some(item), None)
 
   def getInventory: List[InventoryElement[T]] = storeInventory.inventoryList
+  def getInventoryJson: JValue = storeInventory //inventoryToJson(storeInventory)
+
   def checkStock(item: T): Option[InventoryElement[T]] = storeInventory.getItem(item)
   def addToStock(item: T, quantity: Int = 1): List[InventoryElement[T]] = {
     (1 to quantity).foreach{ i => storeInventory.addItem(item) }
