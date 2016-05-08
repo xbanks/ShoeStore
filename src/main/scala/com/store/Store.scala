@@ -29,9 +29,6 @@ class Store[T <: Item](name: String, storeInventory: Inventory[T] = new Inventor
   private val No  = (reason: String) => (false, None, Some(reason))
   private val Yes = (item: InventoryElement[T]) => (true, Some(item), None)
 
-  private val No  = (reason: String) => (false, None, Some(reason))
-  private val Yes = (item: InventoryElement[T]) => (true, Some(item), None)
-
   def getInventory: List[InventoryElement[T]] = storeInventory.inventoryList
   def getInventoryJson: JValue = storeInventory //inventoryToJson(storeInventory)
 
