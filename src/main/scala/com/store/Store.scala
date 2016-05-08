@@ -5,9 +5,7 @@ import com.store.inventory.implicits._
 import com.store.inventory.{Inventory, InventoryElement}
 import org.json4s.JsonAST.JValue
 
-// TODO: maybe switch the parameters around since name is usually the only one used?
-case class Store[T <: Item](val storeInventory: Inventory[T] = new Inventory[T], name: String) {
-  type storeType = T
+class Store[T <: Item](name: String, storeInventory: Inventory[T] = new Inventory[T])  {
   // Require non empty names
   require(name != null, "Name cannot be null")
   require(name.trim != "", "Name must be Non-Empty")
@@ -17,22 +15,22 @@ case class Store[T <: Item](val storeInventory: Inventory[T] = new Inventory[T],
 
   def purchase(item: T, quantity: Int = 1, discount: Float = 0.0f): (Boolean, Option[InventoryElement[T]], Option[String]) = {
     val itemStock = checkStock(item)
+    
+    val retVal = itemStock.map{ i => i match {
+      case x if i.quantity < quantity =>  No(s"Current Quantity: ${i.quantity}")
+      case _ => { (1 to quantity).map{ i => storeInventory.removeItem(item) }
+                  Yes(InventoryElement(item, quantity))}
+    }}
 
-    if(itemStock.isDefined) {
-      val itemQuantity = itemStock.get.quantity
-
-      // Make sure there is enough stock to cover the purchase quantity
-      if(itemQuantity < quantity) {
-        return (false, None, Some(s"Current Quantity: $itemQuantity"))
-      }
-
-      (1 to quantity).map{ i => storeInventory.removeItem(item) }
-      return (true, Some(InventoryElement(item, quantity)), None)
-    }
-
-//    println("This item is not in stock...")
-    (false, None, Some("Item DNE"))
+      //println("This item is not in stock...")
+    retVal.getOrElse(No("Item DNE"))
   }
+
+  private val No  = (reason: String) => (false, None, Some(reason))
+  private val Yes = (item: InventoryElement[T]) => (true, Some(item), None)
+
+  private val No  = (reason: String) => (false, None, Some(reason))
+  private val Yes = (item: InventoryElement[T]) => (true, Some(item), None)
 
   def getInventory: List[InventoryElement[T]] = storeInventory.inventoryList
   def getInventoryJson: JValue = storeInventory //inventoryToJson(storeInventory)
